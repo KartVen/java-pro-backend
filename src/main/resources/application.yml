@@ -1,0 +1,28 @@
+server:
+  port: 8080
+  
+spring:
+  application:
+    name: JavaPro - Backend
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgres/javapro
+    username: root
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database: postgresql
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-root.xml
+    contexts: prod
+
+app:
+  security:
+    role:
+      defaultRole: ROLE_USER
+    jwt:
+      expirationTime: 302400 #43200 #s
+      secretKey: OiuY0kTct8LeWJnrQFsOuuJgIuGZcAXOI7ZRbhGc4uhHr7pJYm1Kt4s1lEnIY2m
+      refreshTokenExpirationTime: 604800 #s

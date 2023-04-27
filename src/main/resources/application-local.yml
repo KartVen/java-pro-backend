@@ -1,0 +1,20 @@
+server:
+  port: 8444
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5444/javapro
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database: postgresql
+    show-sql: true
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-root.xml
+    contexts: prod
+  security:
+    user:
+      name: admin
+      password:

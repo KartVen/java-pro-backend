@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet id="0001-1" author="KartVen" labels="auth-schema">
+
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_users"/>
+            </column>
+            <column name="nickname" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="role" type="VARCHAR(255)"/>
+        </createTable>
+        <addUniqueConstraint columnNames="email" constraintName="uc_users_email" tableName="users"/>
+
+        <createTable tableName="tokens">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_tokens"/>
+            </column>
+            <column name="value" type="VARCHAR(255)"/>
+            <column name="revoked" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expired" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+        <addUniqueConstraint columnNames="value" constraintName="uc_tokens_value" tableName="tokens"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="tokens" constraintName="FK_TOKENS_ON_USER"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+
+    </changeSet>
+
+    <changeSet id="0001-2" author="KartVen" labels="lecture-schema">
+
+        <createTable tableName="lectures">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_lectures"/>
+            </column>
+            <column name="topic" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+        </createTable>
+
+        <createTable tableName="slides">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_slides"/>
+            </column>
+            <column name="content" type="BLOB"/>
+            <column name="lecture_id" type="BIGINT"/>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="lecture_id" baseTableName="slides"
+                                 constraintName="FK_SLIDES_ON_LECTURE" referencedColumnNames="id"
+                                 referencedTableName="lectures"/>
+
+    </changeSet>
+
+    <changeSet id="0001-3" author="KartVen">
+
+        <createTable tableName="sections">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_sections"/>
+            </column>
+            <column name="lecture_id" type="BIGINT"/>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="lecture_id" baseTableName="sections"
+                                 constraintName="FK_SECTIONS_ON_LECTURE" referencedColumnNames="id"
+                                 referencedTableName="lectures"/>
+
+        <createTable tableName="codes">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_codes"/>
+            </column>
+            <column name="section_id" type="BIGINT"/>
+            <column name="content" type="VARCHAR(255)"/>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="section_id" baseTableName="codes" constraintName="FK_CODES_ON_SECTION"
+                                 referencedColumnNames="id" referencedTableName="sections"/>
+
+    </changeSet>
+
+    <changeSet id="0001-4" author="KartVen" labels="quiz-schema">
+
+        <createTable tableName="questions">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_questions"/>
+            </column>
+            <column name="content" type="VARCHAR(255)"/>
+            <column name="quiz_id" type="BIGINT"/>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="quiz_id" baseTableName="questions"
+                                 constraintName="FK_QUESTIONS_ON_QUIZ" referencedColumnNames="id"
+                                 referencedTableName="lectures"/>
+
+        <createTable tableName="answers">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_answers"/>
+            </column>
+            <column name="content" type="VARCHAR(255)"/>
+            <column name="corrected" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="question_id" type="BIGINT"/>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="question_id" baseTableName="answers"
+                                 constraintName="FK_ANSWERS_ON_QUESTION" referencedColumnNames="id"
+                                 referencedTableName="questions"/>
+
+    </changeSet>
+
+    <changeSet id="0001-5" author="KartVen" labels="link-schema">
+
+        <createTable tableName="links">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_links"/>
+            </column>
+            <column name="lecture_id" type="BIGINT"/>
+            <column name="content" type="VARCHAR(255)"/>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="lecture_id" baseTableName="links" constraintName="FK_LINKS_ON_LECTURE"
+                                 referencedColumnNames="id" referencedTableName="lectures"/>
+
+    </changeSet>
+
+</databaseChangeLog>
