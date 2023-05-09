@@ -5,10 +5,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.kartven.javaprobackend.exception.NotFoundException;
 import pl.kartven.javaprobackend.exception.ServerProcessingException;
-import pl.kartven.javaprobackend.rest.SingleLectureDetails;
-import pl.kartven.javaprobackend.rest.SingleSlideDetails;
-import pl.kartven.javaprobackend.rest.mapper.LectureMapper;
-import pl.kartven.javaprobackend.rest.mapper.SlideMapper;
+import pl.kartven.javaprobackend.http.SingleLectureDetails;
+import pl.kartven.javaprobackend.http.SingleSlideDetails;
+import pl.kartven.javaprobackend.http.mapper.LectureMapper;
+import pl.kartven.javaprobackend.http.mapper.SlideMapper;
 
 import java.util.List;
 

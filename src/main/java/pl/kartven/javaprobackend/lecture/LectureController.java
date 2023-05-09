@@ -5,9 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import pl.kartven.javaprobackend.rest.LectureCreateRequest;
-import pl.kartven.javaprobackend.rest.SingleLectureDetails;
-import pl.kartven.javaprobackend.rest.SingleSlideDetails;
+import pl.kartven.javaprobackend.http.SingleLectureDetails;
+import pl.kartven.javaprobackend.http.SingleSlideDetails;
 
 import java.util.List;
 

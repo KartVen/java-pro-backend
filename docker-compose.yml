@@ -21,9 +21,9 @@ services:
     container_name: javapro_postgres
     restart: always
     environment:
-      - "POSTGRES_USER=root"
-      - "POSTGRES_PASSWORD=password"
-      - "POSTGRES_DB=javapro"
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: javapro
     ports:
       - "5444:5432"
     volumes:

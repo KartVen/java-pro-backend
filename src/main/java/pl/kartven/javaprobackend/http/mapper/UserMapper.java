@@ -1,10 +1,10 @@
-package pl.kartven.javaprobackend.rest.mapper;
+package pl.kartven.javaprobackend.http.mapper;
 
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import pl.kartven.javaprobackend.rest.AuthRequest;
+import pl.kartven.javaprobackend.http.AuthRequest;
 import pl.kartven.javaprobackend.user.User;
 
 @Component

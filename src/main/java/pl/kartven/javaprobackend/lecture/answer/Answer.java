@@ -3,7 +3,6 @@ package pl.kartven.javaprobackend.lecture.answer;
 import lombok.Getter;
 import lombok.Setter;
 import pl.kartven.javaprobackend.lecture.question.Question;
-import pl.kartven.javaprobackend.quiz.question.Question;
 
 import javax.persistence.*;
 

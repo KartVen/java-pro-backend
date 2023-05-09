@@ -1,10 +1,10 @@
-package pl.kartven.javaprobackend.rest.mapper;
+package pl.kartven.javaprobackend.http.mapper;
 
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 import pl.kartven.javaprobackend.lecture.Lecture;
-import pl.kartven.javaprobackend.rest.SingleLectureDetails;
+import pl.kartven.javaprobackend.http.SingleLectureDetails;
 
 import java.util.List;
 

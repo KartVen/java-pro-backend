@@ -1,7 +1,6 @@
-package pl.kartven.javaprobackend.rest;
+package pl.kartven.javaprobackend.http;
 
 import lombok.Value;
-import pl.kartven.javaprobackend.lecture.Lecture;
 
 @Value
 public class SingleSlideDetails {

@@ -8,9 +8,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import pl.kartven.javaprobackend.exception.TokenProcessingException;
-import pl.kartven.javaprobackend.rest.AuthRequest;
-import pl.kartven.javaprobackend.rest.AuthResponse;
-import pl.kartven.javaprobackend.rest.mapper.UserMapper;
+import pl.kartven.javaprobackend.http.AuthRequest;
+import pl.kartven.javaprobackend.http.AuthResponse;
+import pl.kartven.javaprobackend.http.mapper.UserMapper;
 import pl.kartven.javaprobackend.token.Token;
 import pl.kartven.javaprobackend.token.TokenRepo;
 import pl.kartven.javaprobackend.user.User;
@@ -19,7 +19,6 @@ import pl.kartven.javaprobackend.user.UserRepo;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Optional;
 
 @Service

@@ -23,4 +23,8 @@ public class Slide {
     @ManyToOne
     @JoinColumn(name = "lecture_id")
     private Lecture lecture;
+
+    public Slide(byte[] content) {
+        this.content = content;
+    }
 }

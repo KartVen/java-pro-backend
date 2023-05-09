@@ -1,4 +1,4 @@
-package pl.kartven.javaprobackend.rest;
+package pl.kartven.javaprobackend.http;
 
 import java.util.List;
 
