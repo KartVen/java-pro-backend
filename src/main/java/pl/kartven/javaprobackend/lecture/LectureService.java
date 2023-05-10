@@ -3,6 +3,7 @@ package pl.kartven.javaprobackend.lecture;
 import io.vavr.control.Option;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.kartven.javaprobackend.exception.NotFoundException;
 import pl.kartven.javaprobackend.exception.ServerProcessingException;
 import pl.kartven.javaprobackend.http.SingleLectureDetails;
@@ -25,6 +26,7 @@ public class LectureService {
                 .getOrElseThrow(ServerProcessingException::new);
     }
 
+    @Transactional
     public List<SingleSlideDetails> getSlidesByLectureId(Long id) {
         return Option.of(Option
                         .ofOptional(lectureRepository.findById(id))

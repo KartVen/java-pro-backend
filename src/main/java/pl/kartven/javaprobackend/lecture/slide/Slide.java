@@ -1,6 +1,7 @@
 package pl.kartven.javaprobackend.lecture.slide;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.kartven.javaprobackend.lecture.Lecture;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "slides")
+@NoArgsConstructor
 public class Slide {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
