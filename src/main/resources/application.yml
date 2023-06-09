@@ -1,6 +1,5 @@
 server:
   port: 8080
-  
 spring:
   application:
     name: JavaPro - Backend
@@ -17,6 +16,10 @@ spring:
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-root.xml
     contexts: prod
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 2MB
 
 app:
   security:

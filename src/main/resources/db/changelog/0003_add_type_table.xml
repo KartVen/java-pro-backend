@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet id="0003-1" author="KartVen">
+        <createTable tableName="types">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_types"/>
+            </column>
+            <column name="value" type="VARCHAR(255)"/>
+        </createTable>
+
+        <createTable tableName="range_types">
+            <column name="range_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_range_types"/>
+            </column>
+            <column name="type_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_range_types"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="range_id" baseTableName="range_types" constraintName="fk_rantyp_on_range" referencedColumnNames="id" referencedTableName="lectures"/>
+        <addForeignKeyConstraint baseColumnNames="type_id" baseTableName="range_types" constraintName="fk_rantyp_on_type" referencedColumnNames="id" referencedTableName="types"/>
+    </changeSet>
+
+    <changeSet id="0003-2" author="KartVen" labels="primary-type-records">
+        <sql><![CDATA[
+            insert into types (id, value)
+            values (1, 'LECTURE'),
+                   (2, 'LABORATORY'),
+                   (3, 'TEST'),
+                   (4, 'LINK');
+            ]]></sql>
+    </changeSet>
+
+</databaseChangeLog>
