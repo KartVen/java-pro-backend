@@ -19,9 +19,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import pl.kartven.javaprobackend.user.UserService;
-import pl.kartven.javaprobackend.auth.JwtAuthFilter;
-import pl.kartven.javaprobackend.auth.LogoutHandler;
+import pl.kartven.javaprobackend.infra.restapi.UserService;
+import pl.kartven.javaprobackend.infra.auth.JwtAuthFilter;
+import pl.kartven.javaprobackend.infra.auth.LogoutHandler;
 
 import static pl.kartven.javaprobackend.util.RestErrorHandler.RestErrorResponse;
 

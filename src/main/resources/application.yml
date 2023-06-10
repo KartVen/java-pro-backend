@@ -5,7 +5,8 @@ spring:
     name: JavaPro - Backend
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postgres/javapro
+    url: jdbc:postgresql://${spring.datasource.host-port}/javapro
+    host-port: postgres
     username: root
     password: password
   jpa:

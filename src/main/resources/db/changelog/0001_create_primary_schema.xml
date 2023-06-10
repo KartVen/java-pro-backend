@@ -37,13 +37,13 @@
 
     </changeSet>
 
-    <changeSet id="0001-2" author="KartVen" labels="lecture-schema">
+    <changeSet id="0001-2" author="KartVen" labels="slide-schema">
 
-        <createTable tableName="lectures">
+        <createTable tableName="topics">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_lectures"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_topics"/>
             </column>
-            <column name="topic" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
             <column name="description" type="VARCHAR(255)"/>
         </createTable>
 
@@ -51,79 +51,87 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_slides"/>
             </column>
-            <column name="content" type="BLOB"/>
-            <column name="lecture_id" type="BIGINT"/>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="image_bytes" type="bytea"/>
+            <column name="topic_id" type="BIGINT"/>
         </createTable>
-        <addForeignKeyConstraint baseColumnNames="lecture_id" baseTableName="slides"
-                                 constraintName="FK_SLIDES_ON_LECTURE" referencedColumnNames="id"
-                                 referencedTableName="lectures"/>
+        <addForeignKeyConstraint baseColumnNames="topic_id" baseTableName="slides" constraintName="FK_SLIDES_ON_TOPIC" referencedColumnNames="id" referencedTableName="topics"/>
 
     </changeSet>
 
-    <changeSet id="0001-3" author="KartVen">
+    <changeSet id="0001-3" author="KartVen" labels="code-schema">
 
         <createTable tableName="sections">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_sections"/>
             </column>
-            <column name="lecture_id" type="BIGINT"/>
+            <column name="topic_id" type="BIGINT"/>
+            <column name="name" type="VARCHAR(255)"/>
         </createTable>
-        <addForeignKeyConstraint baseColumnNames="lecture_id" baseTableName="sections"
-                                 constraintName="FK_SECTIONS_ON_LECTURE" referencedColumnNames="id"
-                                 referencedTableName="lectures"/>
+        <addForeignKeyConstraint baseColumnNames="topic_id" baseTableName="sections" constraintName="FK_SECTIONS_ON_TOPIC" referencedColumnNames="id" referencedTableName="topics"/>
 
         <createTable tableName="codes">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_codes"/>
             </column>
-            <column name="section_id" type="BIGINT"/>
+            <column name="name" type="VARCHAR(255)"/>
             <column name="content" type="VARCHAR(255)"/>
+            <column name="topic_id" type="BIGINT"/>
+            <column name="section_id" type="BIGINT"/>
         </createTable>
-        <addForeignKeyConstraint baseColumnNames="section_id" baseTableName="codes" constraintName="FK_CODES_ON_SECTION"
-                                 referencedColumnNames="id" referencedTableName="sections"/>
+        <addForeignKeyConstraint baseColumnNames="section_id" baseTableName="codes" constraintName="FK_CODES_ON_SECTION" referencedColumnNames="id" referencedTableName="sections"/>
+        <addForeignKeyConstraint baseColumnNames="topic_id" baseTableName="codes" constraintName="FK_CODES_ON_TOPIC" referencedColumnNames="id" referencedTableName="topics"/>
 
     </changeSet>
 
     <changeSet id="0001-4" author="KartVen" labels="quiz-schema">
 
+        <createTable tableName="quizzes">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_quizzes"/>
+            </column>
+            <column name="topic_id" type="BIGINT"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="topic_id" baseTableName="quizzes" constraintName="FK_QUIZZES_ON_TOPIC" referencedColumnNames="id" referencedTableName="topics"/>
+
         <createTable tableName="questions">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_questions"/>
             </column>
-            <column name="content" type="VARCHAR(255)"/>
             <column name="quiz_id" type="BIGINT"/>
+            <column name="text" type="VARCHAR(255)"/>
         </createTable>
-        <addForeignKeyConstraint baseColumnNames="quiz_id" baseTableName="questions"
-                                 constraintName="FK_QUESTIONS_ON_QUIZ" referencedColumnNames="id"
-                                 referencedTableName="lectures"/>
+        <addForeignKeyConstraint baseColumnNames="quiz_id" baseTableName="questions" constraintName="FK_QUESTIONS_ON_QUIZ" referencedColumnNames="id" referencedTableName="quizzes"/>
 
         <createTable tableName="answers">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_answers"/>
             </column>
-            <column name="content" type="VARCHAR(255)"/>
-            <column name="corrected" type="BOOLEAN">
+            <column name="question_id" type="BIGINT"/>
+            <column name="text" type="VARCHAR(255)"/>
+            <column name="is_correct" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
-            <column name="question_id" type="BIGINT"/>
         </createTable>
-        <addForeignKeyConstraint baseColumnNames="question_id" baseTableName="answers"
-                                 constraintName="FK_ANSWERS_ON_QUESTION" referencedColumnNames="id"
-                                 referencedTableName="questions"/>
+        <addForeignKeyConstraint baseColumnNames="question_id" baseTableName="answers" constraintName="FK_ANSWERS_ON_QUESTION" referencedColumnNames="id" referencedTableName="questions"/>
 
     </changeSet>
 
     <changeSet id="0001-5" author="KartVen" labels="link-schema">
 
-        <createTable tableName="links">
+        <createTable tableName="external_links">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_links"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_external_links"/>
             </column>
-            <column name="lecture_id" type="BIGINT"/>
-            <column name="content" type="VARCHAR(255)"/>
+            <column name="topic_id" type="BIGINT"/>
+            <column name="section_id" type="BIGINT"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="url" type="VARCHAR(255)"/>
         </createTable>
-        <addForeignKeyConstraint baseColumnNames="lecture_id" baseTableName="links" constraintName="FK_LINKS_ON_LECTURE"
-                                 referencedColumnNames="id" referencedTableName="lectures"/>
+        <addForeignKeyConstraint baseColumnNames="section_id" baseTableName="external_links" constraintName="FK_EXTERNAL_LINKS_ON_SECTION" referencedColumnNames="id" referencedTableName="sections"/>
+        <addForeignKeyConstraint baseColumnNames="topic_id" baseTableName="external_links" constraintName="FK_EXTERNAL_LINKS_ON_TOPIC" referencedColumnNames="id" referencedTableName="topics"/>
 
     </changeSet>
 

@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5444/javapro
+    host-port: localhost:5444
   jpa:
     hibernate:
       ddl-auto: validate
