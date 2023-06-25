@@ -11,7 +11,7 @@ import pl.kartven.javaprobackend.infra.restapi.dto.TopicDto;
 import java.util.List;
 
 @Component
-@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.FIELD)
+@Mapper(componentModel = "spring")
 public abstract class QuizMapper {
     public abstract List<QuizDto> map(List<Quiz> quizzes);
     public abstract QuizDto map(Quiz quiz);

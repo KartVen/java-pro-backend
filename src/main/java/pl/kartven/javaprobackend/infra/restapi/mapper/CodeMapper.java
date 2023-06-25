@@ -9,7 +9,7 @@ import pl.kartven.javaprobackend.infra.restapi.dto.CodeDto;
 import java.util.List;
 
 @Component
-@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.FIELD)
+@Mapper(componentModel = "spring")
 public abstract class CodeMapper {
     public abstract List<CodeDto> map(List<Code> codes);
     public abstract CodeDto map(Code code);

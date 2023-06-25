@@ -8,7 +8,7 @@ import pl.kartven.javaprobackend.infra.model.user.User;
 import pl.kartven.javaprobackend.infra.restapi.dto.AuthRequest;
 
 @Component
-@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.FIELD)
+@Mapper(componentModel = "spring")
 public abstract class UserMapper {
     @Autowired
     private PasswordEncoder passwordEncoder;

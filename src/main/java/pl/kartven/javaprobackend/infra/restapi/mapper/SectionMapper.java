@@ -9,7 +9,7 @@ import pl.kartven.javaprobackend.infra.restapi.dto.SectionDto;
 import java.util.List;
 
 @Component
-@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.FIELD)
+@Mapper(componentModel = "spring")
 public abstract class SectionMapper {
     public abstract List<SectionDto> map(List<Section> sections);
     public abstract SectionDto map(Section section);

@@ -5,8 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.kartven.javaprobackend.exception.ServerProcessingException;
 import pl.kartven.javaprobackend.infra.model.code.CodeRepository;
+import pl.kartven.javaprobackend.infra.model.externallink.ExternalLinkRepository;
 import pl.kartven.javaprobackend.infra.restapi.dto.CodeDto;
+import pl.kartven.javaprobackend.infra.restapi.dto.LinkDto;
 import pl.kartven.javaprobackend.infra.restapi.mapper.CodeMapper;
+import pl.kartven.javaprobackend.infra.restapi.mapper.LinkMapper;
 
 import java.util.List;
 
@@ -15,10 +18,18 @@ import java.util.List;
 public class SectionService {
     private final CodeRepository codeRepository;
     private final CodeMapper codeMapper;
+    private final ExternalLinkRepository externalLinkRepository;
+    private final LinkMapper linkMapper;
 
     public List<CodeDto> getCodesOfSection(Long id) {
         return Option.of(codeRepository.findByTopic_Id(id))
                 .map(codeMapper::map)
+                .getOrElseThrow(ServerProcessingException::new);
+    }
+
+    public List<LinkDto> getLinksOfSection(Long id) {
+        return Option.of(externalLinkRepository.findByTopic_Id(id))
+                .map(linkMapper::map)
                 .getOrElseThrow(ServerProcessingException::new);
     }
 }

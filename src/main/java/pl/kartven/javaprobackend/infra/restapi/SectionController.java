@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.kartven.javaprobackend.infra.restapi.dto.CodeDto;
+import pl.kartven.javaprobackend.infra.restapi.dto.LinkDto;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,5 +24,12 @@ public class SectionController {
             @PathVariable Long id
     ){
         return ResponseEntity.status(HttpStatus.OK).body(sectionService.getCodesOfSection(id));
+    }
+
+    @GetMapping("/{id}/links")
+    public ResponseEntity<List<LinkDto>> getLinksOfSection(
+            @PathVariable Long id
+    ){
+        return ResponseEntity.status(HttpStatus.OK).body(sectionService.getLinksOfSection(id));
     }
 }

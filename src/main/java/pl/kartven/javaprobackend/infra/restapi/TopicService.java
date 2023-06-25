@@ -10,6 +10,7 @@ import pl.kartven.javaprobackend.infra.model.topic.TopicRepository;
 import pl.kartven.javaprobackend.infra.restapi.dto.QuizDto;
 import pl.kartven.javaprobackend.infra.restapi.dto.SectionDto;
 import pl.kartven.javaprobackend.infra.restapi.dto.TopicDto;
+import pl.kartven.javaprobackend.infra.restapi.mapper.QuizDetailsMapper;
 import pl.kartven.javaprobackend.infra.restapi.mapper.QuizMapper;
 import pl.kartven.javaprobackend.infra.restapi.mapper.SectionMapper;
 import pl.kartven.javaprobackend.infra.restapi.mapper.TopicMapper;
