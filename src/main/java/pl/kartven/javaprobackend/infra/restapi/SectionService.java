@@ -3,7 +3,7 @@ package pl.kartven.javaprobackend.infra.restapi;
 import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.kartven.javaprobackend.exception.ServerProcessingException;
+import pl.kartven.javaprobackend.exception.structure.ServerProcessingException;
 import pl.kartven.javaprobackend.infra.model.code.CodeRepository;
 import pl.kartven.javaprobackend.infra.model.externallink.ExternalLinkRepository;
 import pl.kartven.javaprobackend.infra.restapi.dto.CodeDto;

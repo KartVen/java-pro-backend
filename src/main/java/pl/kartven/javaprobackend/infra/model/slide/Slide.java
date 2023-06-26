@@ -21,5 +21,11 @@ public class Slide {
     @ManyToOne
     @JoinColumn(name = "topic_id")
     private Topic topic;
+
+    public Slide(String title, byte[] imageBytes, Topic topic) {
+        this.title = title;
+        this.imageBytes = imageBytes;
+        this.topic = topic;
+    }
 }
 

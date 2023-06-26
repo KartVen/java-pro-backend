@@ -23,7 +23,7 @@ import pl.kartven.javaprobackend.infra.restapi.UserService;
 import pl.kartven.javaprobackend.infra.auth.JwtAuthFilter;
 import pl.kartven.javaprobackend.infra.auth.LogoutHandler;
 
-import static pl.kartven.javaprobackend.util.RestErrorHandler.RestErrorResponse;
+import static pl.kartven.javaprobackend.exception.RestErrorHandler.RestErrorResponse;
 
 @Configuration
 @EnableGlobalMethodSecurity(

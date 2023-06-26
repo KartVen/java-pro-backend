@@ -7,6 +7,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Configuration
 @EnableConfigurationProperties
 @Import(value = {
@@ -18,5 +23,13 @@ public class AppConfig {
     @ConfigurationProperties("app.security.role")
     public static class RoleProperties {
         private String defaultRole;
+    }
+
+    @Data
+    @Configuration
+    @ConfigurationProperties("app.content")
+    public static class ContentProperties {
+        private Set<String> imageWhitelist = new HashSet<>();
+        private Float compressScale;
     }
 }

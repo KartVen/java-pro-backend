@@ -7,7 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
-import pl.kartven.javaprobackend.exception.TokenProcessingException;
+import pl.kartven.javaprobackend.exception.structure.TokenProcessingException;
 import pl.kartven.javaprobackend.infra.auth.JwtUtil;
 import pl.kartven.javaprobackend.infra.restapi.dto.AuthRequest;
 import pl.kartven.javaprobackend.infra.restapi.dto.AuthResponse;

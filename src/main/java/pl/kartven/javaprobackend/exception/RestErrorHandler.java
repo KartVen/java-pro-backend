@@ -1,4 +1,4 @@
-package pl.kartven.javaprobackend.util;
+package pl.kartven.javaprobackend.exception;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import pl.kartven.javaprobackend.exception.NotFoundException;
-import pl.kartven.javaprobackend.exception.ServerProcessingException;
+import pl.kartven.javaprobackend.exception.structure.NotFoundException;
+import pl.kartven.javaprobackend.exception.structure.ServerProcessingException;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
