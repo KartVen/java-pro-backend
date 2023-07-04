@@ -1,6 +1,5 @@
 package pl.kartven.javaprobackend.utility;
 
-import io.vavr.control.Option;
 import io.vavr.control.Try;
 import lombok.NonNull;
 import org.springframework.web.multipart.MultipartFile;

@@ -1,10 +1,8 @@
 package pl.kartven.javaprobackend.infra.auth;
 
 import io.vavr.control.Option;
-import io.vavr.control.Try;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,11 +13,9 @@ import pl.kartven.javaprobackend.infra.restapi.UserService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.file.attribute.UserPrincipal;
 
 @Component
 @RequiredArgsConstructor

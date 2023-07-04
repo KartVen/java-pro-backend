@@ -19,11 +19,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import pl.kartven.javaprobackend.infra.restapi.UserService;
 import pl.kartven.javaprobackend.infra.auth.JwtAuthFilter;
 import pl.kartven.javaprobackend.infra.auth.LogoutHandler;
+import pl.kartven.javaprobackend.infra.restapi.UserService;
 
-import static pl.kartven.javaprobackend.exception.RestErrorHandler.RestErrorResponse;
+import static pl.kartven.javaprobackend.exception.ExceptionRestErrorHandler.RestErrorResponse;
 
 @Configuration
 @EnableGlobalMethodSecurity(

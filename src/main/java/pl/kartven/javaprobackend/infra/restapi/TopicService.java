@@ -2,16 +2,18 @@ package pl.kartven.javaprobackend.infra.restapi;
 
 import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.kartven.javaprobackend.exception.structure.NotFoundException;
 import pl.kartven.javaprobackend.exception.structure.ServerProcessingException;
-import pl.kartven.javaprobackend.infra.model.quiz.QuizRepository;
-import pl.kartven.javaprobackend.infra.model.section.SectionRepository;
-import pl.kartven.javaprobackend.infra.model.slide.Slide;
-import pl.kartven.javaprobackend.infra.model.slide.SlideRepository;
-import pl.kartven.javaprobackend.infra.model.topic.Topic;
-import pl.kartven.javaprobackend.infra.model.topic.TopicRepository;
+import pl.kartven.javaprobackend.infra.model.entity.Slide;
+import pl.kartven.javaprobackend.infra.model.entity.Topic;
+import pl.kartven.javaprobackend.infra.model.repository.QuizRepository;
+import pl.kartven.javaprobackend.infra.model.repository.SectionRepository;
+import pl.kartven.javaprobackend.infra.model.repository.SlideRepository;
+import pl.kartven.javaprobackend.infra.model.repository.TopicRepository;
 import pl.kartven.javaprobackend.infra.restapi.dto.*;
 import pl.kartven.javaprobackend.infra.restapi.mapper.QuizMapper;
 import pl.kartven.javaprobackend.infra.restapi.mapper.SectionMapper;
@@ -19,8 +21,9 @@ import pl.kartven.javaprobackend.infra.restapi.mapper.SlideMapper;
 import pl.kartven.javaprobackend.infra.restapi.mapper.TopicMapper;
 import pl.kartven.javaprobackend.utility.ImageUtils;
 
-import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Supplier;
 
 import static pl.kartven.javaprobackend.config.AppConfig.ContentProperties;
 
@@ -36,15 +39,21 @@ public class TopicService {
     private final ContentProperties contentProperties;
     private final SlideRepository slideRepository;
     private final SlideMapper slideMapper;
+    private final UserService userService;
 
-    public List<TopicDto> getTopics() {
-        return Option.of(topicRepository.findAll())
+    public List<TopicResDto> getTopics(Long id) {
+        return getTopicsFromDB(() ->
+                (Objects.isNull(id)) ? topicRepository.findAll() : topicRepository.findByUser_Id(id)
+        );
+    }
+
+    private List<TopicResDto> getTopicsFromDB(Supplier<List<Topic>> supplier) {
+        return Option.of(supplier.get())
                 .map(topicMapper::map)
                 .getOrElseThrow(ServerProcessingException::new);
     }
 
-
-    public List<SectionDto> getSectionsOfTopic(Long id) {
+    public List<SectionResDto> getSectionsOfTopic(Long id) {
         return Option.of(sectionRepository.findByTopic_Id(id))
                 .map(sectionMapper::map)
                 .getOrElseThrow(ServerProcessingException::new);
@@ -56,7 +65,7 @@ public class TopicService {
                 .getOrElseThrow(ServerProcessingException::new);
     }
 
-    public void postSlidesOfTopic(Long id, @Valid SlidesReqDto body) {
+    public void postSlidesOfTopic(Long id, SlidesReqDto body) {
         Option.of(body)
                 .map(SlidesReqDto::getSlides)
                 .peek(slides -> slides.forEach(slide -> processSlide(id, slide)));
@@ -71,12 +80,8 @@ public class TopicService {
                     throw new ServerProcessingException();
                 })
                 .map(multipartFile -> ImageUtils.compressImage(multipartFile, contentProperties.getCompressScale()))
-                .map(bytes -> new Slide(filename, bytes, findTopic(id)))
+                .map(bytes -> new Slide(filename, bytes, topicRepository.findById(id).orElseThrow(NotFoundException::new)))
                 .peek(slideRepository::save);
-    }
-
-    private Topic findTopic(Long id) {
-        return topicRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     private boolean isImageFile(String fileName) {
@@ -85,9 +90,34 @@ public class TopicService {
                 .isEmpty();
     }
 
-    public List<SlideResDto> getSlidesOfTopic(Long id) {
-        return Option.of(slideRepository.findByTopic_Id(id))
+    public List<SlideResDto> getSlidesOfTopic(Long id, Integer page, Integer size) {
+        Pageable pageable = (Objects.isNull(page) || Objects.isNull(size)) ?
+                Pageable.unpaged() : PageRequest.of(page, size);
+        return Option.of(slideRepository.findByTopic_Id(id, pageable))
                 .map(slideMapper::map)
                 .getOrElseThrow(ServerProcessingException::new);
+    }
+
+    public void postTopic(TopicReqDto body) {
+        Option.of(body)
+                .map(topicMapper::map)
+                .peek(topic -> topic.setUser(userService.getContenxtUser()))
+                .map(topicRepository::save)
+                .onEmpty(() -> {
+                    throw new ServerProcessingException();
+                });
+    }
+
+    public void postSectionOfTopic(Long id, SectionReqDto body) {
+        Option.of(body)
+                .map(sectionMapper::map)
+                .peek(section -> {
+                    section.setTopic(topicRepository.findById(id).orElseThrow(NotFoundException::new));
+                    section.setUser(userService.getContenxtUser());
+                })
+                .map(sectionRepository::save)
+                .onEmpty(() -> {
+                    throw new ServerProcessingException();
+                });
     }
 }

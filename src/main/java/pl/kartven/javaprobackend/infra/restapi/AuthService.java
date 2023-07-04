@@ -6,16 +6,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.kartven.javaprobackend.exception.structure.EmailExistException;
 import pl.kartven.javaprobackend.exception.structure.TokenProcessingException;
 import pl.kartven.javaprobackend.infra.auth.JwtUtil;
-import pl.kartven.javaprobackend.infra.restapi.dto.AuthRequest;
-import pl.kartven.javaprobackend.infra.restapi.dto.AuthResponse;
+import pl.kartven.javaprobackend.infra.model.entity.Token;
+import pl.kartven.javaprobackend.infra.model.entity.User;
+import pl.kartven.javaprobackend.infra.model.repository.TokenRepository;
+import pl.kartven.javaprobackend.infra.model.repository.UserRepository;
+import pl.kartven.javaprobackend.infra.restapi.dto.AuthReqDto;
+import pl.kartven.javaprobackend.infra.restapi.dto.AuthResDto;
 import pl.kartven.javaprobackend.infra.restapi.mapper.UserMapper;
-import pl.kartven.javaprobackend.infra.model.token.Token;
-import pl.kartven.javaprobackend.infra.model.token.TokenRepo;
-import pl.kartven.javaprobackend.infra.model.user.User;
-import pl.kartven.javaprobackend.infra.model.user.UserRepo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,21 +27,28 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-    private final UserRepo userRepo;
-    private final TokenRepo tokenRepo;
+    private final UserRepository userRepo;
+    private final TokenRepository tokenRepo;
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
     private final UserMapper userMapper;
     private final ObjectMapper objectMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthResponse register(AuthRequest.Register body) {
+    public AuthResDto register(AuthReqDto.Register body) {
         return Option.of(userMapper.map(body))
+                .peek(user -> user.setPassword(passwordEncoder.encode(body.getPassword())))
+                .peek(this::validateExistEmail)
                 .map(userRepo::save)
-                .map(this::generateNewTokensAndGetAuthResponse)
+                .map(this::generateNewTokensAndResponse)
                 .getOrElseThrow(() -> new TokenProcessingException("Failed to processing authentication"));
     }
 
-    public AuthResponse login(AuthRequest.Login body) {
+    private void validateExistEmail(User user) {
+        if (userRepo.findByEmail(user.getEmail()).isPresent()) throw new EmailExistException();
+    }
+
+    public AuthResDto login(AuthReqDto.Login body) {
         return Option.of(new UsernamePasswordAuthenticationToken(
                                 body.getEmail(), body.getPassword()
                         )
@@ -48,21 +57,27 @@ public class AuthService {
                 .map(authentication -> (User) authentication.getPrincipal())
                 .map(user -> userRepo.findByEmail(user.getEmail()))
                 .map(Optional::get)
-                .map(this::generateNewTokensAndGetAuthResponse)
+                .map(this::generateNewTokensAndResponse)
                 .getOrElseThrow(() -> new TokenProcessingException("Failed to processing authentication"));
     }
 
-    private AuthResponse generateNewTokensAndGetAuthResponse(User user, String refreshToken) {
+    private AuthResDto generateNewTokensAndResponse(User user, String refreshToken) {
         this.revokeAllUserTokens(user);
         return Option
                 .of(new Token(jwtUtil.generateToken(user), user))
                 .map(tokenRepo::save)
-                .map(token -> new AuthResponse(user.getNickname(), token.getValue(), refreshToken))
+                .map(token -> new AuthResDto(
+                        user.getId(),
+                        user.getNickname(),
+                        user.getEmail(),
+                        token.getValue(),
+                        refreshToken
+                ))
                 .getOrNull();
     }
 
-    private AuthResponse generateNewTokensAndGetAuthResponse(User user) {
-        return this.generateNewTokensAndGetAuthResponse(user, jwtUtil.generateRefreshToken(user));
+    private AuthResDto generateNewTokensAndResponse(User user) {
+        return this.generateNewTokensAndResponse(user, jwtUtil.generateRefreshToken(user));
     }
 
     private void revokeAllUserTokens(User user) {
@@ -84,7 +99,7 @@ public class AuthService {
                 .map(userRepo::findByEmail)
                 .map(Optional::get)
                 .filter(user -> jwtUtil.isValid(refreshToken, user))
-                .map(user -> generateNewTokensAndGetAuthResponse(user, refreshToken));
+                .map(user -> generateNewTokensAndResponse(user, refreshToken));
         objectMapper.writeValue(response.getOutputStream(), authResponse);
     }
 }

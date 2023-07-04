@@ -1,35 +1,34 @@
 package pl.kartven.javaprobackend.infra.restapi.mapper;
 
-import org.mapstruct.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.Named;
 import org.springframework.stereotype.Component;
-import pl.kartven.javaprobackend.infra.model.user.User;
-import pl.kartven.javaprobackend.infra.restapi.dto.AuthRequest;
+import pl.kartven.javaprobackend.infra.model.entity.User;
+import pl.kartven.javaprobackend.infra.model.entity.UserRole;
+import pl.kartven.javaprobackend.infra.restapi.dto.AuthReqDto;
 
 @Component
 @Mapper(componentModel = "spring")
-public abstract class UserMapper {
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
+public interface UserMapper {
     @Mappings(value = {
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "nickname", source = "nickname", qualifiedByName = "mapNickname"),
-            @Mapping(target = "role", expression = "java(pl.kartven.javaprobackend.infra.model.user.UserRole.ROLE_USER)"),
+            @Mapping(target = "role", source = "body", qualifiedByName = "mapRole"),
             @Mapping(target = "tokens", ignore = true),
             @Mapping(target = "authorities", ignore = true),
-            @Mapping(target = "password", source = "password", qualifiedByName = "mapPassword")
+            @Mapping(target = "password", ignore = true)
     })
-    public abstract User map(AuthRequest.Register body);
+    User map(AuthReqDto.Register body);
 
     @Named("mapNickname")
-    protected String mapNickname(String nickname){
+    default String mapNickname(String nickname) {
         return nickname.toLowerCase();
     }
 
-    @Named("mapPassword")
-    protected String mapPassword(String password){
-        return passwordEncoder.encode(password);
+    @Named("mapRole")
+    default UserRole mapUser(AuthReqDto.Register body){
+        return UserRole.ROLE_USER;
     }
 }

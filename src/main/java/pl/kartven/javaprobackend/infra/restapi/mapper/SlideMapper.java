@@ -2,7 +2,7 @@ package pl.kartven.javaprobackend.infra.restapi.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import pl.kartven.javaprobackend.infra.model.slide.Slide;
+import pl.kartven.javaprobackend.infra.model.entity.Slide;
 import pl.kartven.javaprobackend.infra.restapi.dto.SlideResDto;
 
 import java.util.List;

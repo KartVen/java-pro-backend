@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet id="0004-1" author="KartVen">
+        <addColumn tableName="topics">
+            <column name="user_id" type="BIGINT"/>
+        </addColumn>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="topics" constraintName="FK_TOPICS_ON_USER"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+
+        <addColumn tableName="slides">
+            <column name="user_id" type="BIGINT"/>
+        </addColumn>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="slides" constraintName="FK_SLIDES_ON_USER"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+
+    <changeSet id="0004-2" author="KartVen">
+        <addColumn tableName="sections">
+            <column name="user_id" type="BIGINT"/>
+        </addColumn>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="sections" constraintName="FK_SECTIONS_ON_USER"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+
+        <addColumn tableName="codes">
+            <column name="user_id" type="BIGINT"/>
+        </addColumn>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="codes" constraintName="FK_CODES_ON_USER"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+
+    <changeSet id="0004-3" author="KartVen">
+        <addColumn tableName="quizzes">
+            <column name="user_id" type="BIGINT"/>
+        </addColumn>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="quizzes" constraintName="FK_QUIZZES_ON_USER"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+
+        <addColumn tableName="questions">
+            <column name="user_id" type="BIGINT"/>
+        </addColumn>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="questions"
+                                 constraintName="FK_QUESTIONS_ON_USER"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+
+        <addColumn tableName="answers">
+            <column name="user_id" type="BIGINT"/>
+        </addColumn>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="answers" constraintName="FK_ANSWERS_ON_USER"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+
+    <changeSet id="0004-4" author="KartVen">
+        <addColumn tableName="external_links">
+            <column name="user_id" type="BIGINT"/>
+        </addColumn>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="external_links"
+                                 constraintName="FK_EXTERNAL_LINKS_ON_USER"
+                                 referencedColumnNames="id" referencedTableName="users"/>
+    </changeSet>
+
+</databaseChangeLog>

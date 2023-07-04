@@ -7,79 +7,96 @@
 
     <changeSet id="0003-1" author="KartVen" labels="tests-schema-records">
         <sql><![CDATA[
-            INSERT INTO quizzes (id, topic_id, name, description)
-            VALUES (1, 1, 'Quiz wprowadzający', 'Quiz z podstaw programowania'),
-                   (2, 1, 'Quiz testowy', 'Quiz do sprawdzenia wiedzy'),
-                   (3, 2, 'Quiz dziedziczenie', 'Quiz dotyczący dziedziczenia klas');
+            insert into public.users (nickname, email, password, role)
+            values  ('username1', 'user1@example.com', '$2a$10$RInkHPhfblcxaq2CRzX8WOddaI7mvlWOsbFCrBQFGeUt90/cmTQjW', 'ROLE_USER'),
+                    ('username2', 'user2@example.com', '$2a$10$Qr73Kh2I/wcoxAzM5q7H1OMrlVi1fVSCfS6qlFyDdHH65mWbRTTem', 'ROLE_USER');
 
-            INSERT INTO sections (id, topic_id, name)
-            VALUES (1, 1, 'Wprowadzenie'),
-                   (2, 1, 'Podstawy programowania'),
-                   (3, 2, 'Dziedziczenie'),
-                   (4, 2, 'Dziedziczenie wielokrotne'),
-                   (5, 2, 'Polimorfizm'),
-                   (6, 2, 'Klasy abstrakcyjne'),
-                   (7, 3, 'Interfejsy'),
-                   (8, 3, 'Wyjątki'),
-                   (9, 3, 'Kolekcje'),
-                   (10, 4, 'Wątki'),
-                   (11, 4, 'Operacje wejścia/wyjścia'),
-                   (12, 4, 'Obsługa plików'),
-                   (13, 5, 'Bazy danych');
+            insert into public.topics (name, description, user_id)
+            values  ('Technologia Java, JVM. Platformy.', 'Język Java. Klasy, pakiety, moduły.', 1),
+                    ('Java SE. Język Java, podstawy, OOP.', 'Klasy, pola, metody, obiekty.', 2),
+                    ('Typy sparametryzowane. Biblioteki AWT, Swing.', 'Budowa GUI.', 1),
+                    ('Interfejsy, typy, implementacja. AWT, Swing.', 'Obsługa zdarzeń cz. 1', 1),
+                    ('Klasy i interfejsy zagnieżdżone. AWT, Swing.', 'Obsługa zdarzeń cz. 2', 1),
+                    ('Wyrażenia Lambda. JavaFX cz. 1, budowa aplikacji.', null, 1),
+                    ('Java FX cz. 2 – CSS, FXML. Aplikacje MVC, hybrydowe.', null, 2),
+                    ('Java Stream API. Java Embedded. Java Android API. Budowa aplikacji.', null, 1),
+                    ('Java SE&EE–JDBC. Java Persistence Spring + Hibernate. Java Cloud', null, 1),
+                    ('JEE, Enterprise App. EJB. Web Services JAX-WS, JAX-RS.', null, 1);
 
-            INSERT INTO codes (id, name, content, topic_id, section_id)
-            VALUES (1, 'Kod1.java', 'public class Main { /* kod */ }', 1, 1),
-                   (2, 'Kod2.html', '<html><head></head><body>/* kod */</body></html>', 1, 2),
-                   (3, 'Kod3.jsp', '<% /* kod */ %>', 2, 3),
-                   (4, 'Kod4.java', 'public class Inheritance { /* kod */ }', 2, 4),
-                   (5, 'Kod5.java', 'public class Polymorphism { /* kod */ }', 2, 5),
-                   (6, 'Kod6.java', 'public abstract class AbstractClass { /* kod */ }', 2, 6),
-                   (7, 'Kod7.java', 'public interface Interface { /* kod */ }', 3, 7),
-                   (8, 'Kod8.java', 'public class Exceptions { /* kod */ }', 3, 8),
-                   (9, 'Kod9.java', 'public class Collections { /* kod */ }', 3, 9),
-                   (10, 'Kod10.java', 'public class Threads { /* kod */ }', 4, 10),
-                   (11, 'Kod11.java', 'public class IOOperations { /* kod */ }', 4, 11),
-                   (12, 'Kod12.java', 'public class FileHandling { /* kod */ }', 4, 12),
-                   (13, 'Kod13.java', 'public class Database { /* kod */ }', 5, 13);
 
-            INSERT INTO questions (id, quiz_id, text)
-            VALUES (1, 1, 'Co to jest zmienna?'),
-                   (2, 1, 'Podstawowe typy danych?'),
-                   (3, 1, 'Pętla for a while?'),
-                   (4, 2, 'Dziedziczenie klas?'),
-                   (5, 2, 'Wynik operatora AND (&&)?'),
-                   (6, 2, 'Co to jest polimorfizm?'),
-                   (7, 3, 'Klasa abstrakcyjna?'),
-                   (8, 3, 'Interfejs vs klasa abstrakcyjna?'),
-                   (9, 3, 'Dziedziczenie wielokrotne w Javie?'),
-                   (10, 3, 'Nadpisywanie metod?');
+            insert into public.quizzes (topic_id, name, description, user_id)
+            values  (1, 'Quiz wprowadzający', 'Quiz z podstaw programowania', 1),
+                    (1, 'Quiz testowy', 'Quiz do sprawdzenia wiedzy', 2),
+                    (2, 'Quiz dziedziczenie', 'Quiz dotyczący dziedziczenia klas', 1);
 
-            INSERT INTO answers (id, question_id, text, is_correct)
-            VALUES (1, 1, 'Symboliczne oznaczenie miejsca w pamięci.', true),
-                   (2, 1, 'Instrukcja warunkowa w Javie.', false),
-                   (3, 1, 'Wyświetlanie tekstu na ekranie.', false),
-                   (4, 1, 'Zbiór danych przechowywanych w pamięci.', false),
-                   (5, 2, 'int, double, boolean, char itd.', true),
-                   (6, 2, 'start, stop, pause, reset.', false),
-                   (7, 2, 'if, else, for, while.', false),
-                   (8, 2, 'true, false, null.', false),
-                   (9, 3, 'Iteracja po kolekcji lub tablicy.', true),
-                   (10, 3, 'Brak zdefiniowanej ilości iteracji.', false),
-                   (11, 3, 'Iteracja w oparciu o warunek.', false),
-                   (12, 3, 'Dowolna iteracja.', false),
-                   (13, 4, 'Tworzenie nowych klas na podstawie istniejących.', true),
-                   (14, 4, 'Usuwanie klas z hierarchii dziedziczenia.', false),
-                   (15, 4, 'Tworzenie interfejsów dla klas dziedziczących.', false),
-                   (16, 4, 'Tworzenie kopii istniejących klas.', false),
-                   (17, 5, 'Zwraca prawdę, gdy oba warunki są prawdziwe.', true),
-                   (18, 5, 'Zwraca prawdę, gdy przynajmniej jeden warunek jest prawdziwy.', false),
-                   (19, 5, 'Zwraca prawdę, gdy oba warunki są fałszywe.', false),
-                   (20, 5, 'Zwraca fałsz, gdy przynajmniej jeden warunek jest fałszywy.', false);
+            insert into public.sections (topic_id, name, user_id)
+            values  (1, 'Wprowadzenie', 1),
+                    (1, 'Podstawy programowania', 1),
+                    (2, 'Dziedziczenie', 2),
+                    (2, 'Dziedziczenie wielokrotne', 2),
+                    (2, 'Polimorfizm', 2),
+                    (2, 'Klasy abstrakcyjne', 2),
+                    (3, 'Interfejsy', 1),
+                    (3, 'Wyjątki', 1),
+                    (3, 'Kolekcje', 1),
+                    (4, 'Wątki', 1),
+                    (4, 'Operacje wejścia/wyjścia', 1),
+                    (4, 'Obsługa plików', 1),
+                    (5, 'Bazy danych', 1);
 
-            INSERT INTO external_links (id, topic_id, section_id, name, url)
-            VALUES (1, 1, 1, 'Link 1', 'http://example.com/link1'),
-                   (2, 1, 2, 'Link 2', 'http://example.com/link2'),
-                   (3, 2, 3, 'Link 3', 'http://example.com/link3');
+            insert into public.codes (name, content, topic_id, section_id, user_id)
+            values  ('Kod1.java', 'public class Main { /* kod */ }', 1, 1, 1),
+                    ('Kod2.html', '<html><head></head><body>/* kod */</body></html>', 1, 2, 1),
+                    ('Kod3.jsp', '<% /* kod */ %>', 2, 3, 2),
+                    ('Kod4.java', 'public class Inheritance { /* kod */ }', 2, 4, 2),
+                    ('Kod5.java', 'public class Polymorphism { /* kod */ }', 2, 5, 2),
+                    ('Kod6.java', 'public abstract class AbstractClass { /* kod */ }', 2, 6, 2),
+                    ('Kod7.java', 'public interface Interface { /* kod */ }', 3, 7, 1),
+                    ('Kod8.java', 'public class Exceptions { /* kod */ }', 3, 8, 1),
+                    ('Kod9.java', 'public class Collections { /* kod */ }', 3, 9, 1),
+                    ('Kod10.java', 'public class Threads { /* kod */ }', 4, 10, 1),
+                    ('Kod11.java', 'public class IOOperations { /* kod */ }', 4, 11, 1),
+                    ('Kod12.java', 'public class FileHandling { /* kod */ }', 4, 12, 1),
+                    ('Kod13.java', 'public class Database { /* kod */ }', 5, 13, 1);
+
+            insert into public.questions (quiz_id, text, user_id)
+            values  (1, 'Co to jest zmienna?', 1),
+                    (1, 'Podstawowe typy danych?', 1),
+                    (1, 'Pętla for a while?', 1),
+                    (2, 'Dziedziczenie klas?', 2),
+                    (2, 'Wynik operatora AND (&&)?', 2),
+                    (2, 'Co to jest polimorfizm?', 2),
+                    (3, 'Klasa abstrakcyjna?', 1),
+                    (3, 'Interfejs vs klasa abstrakcyjna?', 1),
+                    (3, 'Dziedziczenie wielokrotne w Javie?', 1),
+                    (3, 'Nadpisywanie metod?', 1);
+
+            insert into public.answers (question_id, text, is_correct, user_id)
+            values  (1, 'Symboliczne oznaczenie miejsca w pamięci.', true, 1),
+                    (1, 'Instrukcja warunkowa w Javie.', false, 1),
+                    (1, 'Wyświetlanie tekstu na ekranie.', false, 1),
+                    (1, 'Zbiór danych przechowywanych w pamięci.', false, 1),
+                    (2, 'int, double, boolean, char itd.', true, 1),
+                    (2, 'start, stop, pause, reset.', false, 1),
+                    (2, 'if, else, for, while.', false, 1),
+                    (2, 'true, false, null.', false, 1),
+                    (3, 'Iteracja po kolekcji lub tablicy.', true, 1),
+                    (3, 'Brak zdefiniowanej ilości iteracji.', false, 1),
+                    (3, 'Iteracja w oparciu o warunek.', false, 1),
+                    (3, 'Dowolna iteracja.', false, 1),
+                    (4, 'Tworzenie nowych klas na podstawie istniejących.', true, 2),
+                    (4, 'Usuwanie klas z hierarchii dziedziczenia.', false, 2),
+                    (4, 'Tworzenie interfejsów dla klas dziedziczących.', false, 2),
+                    (4, 'Tworzenie kopii istniejących klas.', false, 2),
+                    (5, 'Zwraca prawdę, gdy oba warunki są prawdziwe.', true, 2),
+                    (5, 'Zwraca prawdę, gdy przynajmniej jeden warunek jest prawdziwy.', false, 2),
+                    (5, 'Zwraca prawdę, gdy oba warunki są fałszywe.', false, 2),
+                    (5, 'Zwraca fałsz, gdy przynajmniej jeden warunek jest fałszywy.', false, 2);
+
+            insert into public.external_links (topic_id, section_id, name, url, user_id)
+            values  (1, 1, 'Link 1', 'http://example.com/link1', 1),
+                    (1, 2, 'Link 2', 'http://example.com/link2', 1),
+                    (2, 3, 'Link 3', 'http://example.com/link3', 2);
             ]]></sql>
     </changeSet>
 

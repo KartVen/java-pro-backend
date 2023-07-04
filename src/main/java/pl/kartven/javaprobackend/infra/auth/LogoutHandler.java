@@ -6,7 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import pl.kartven.javaprobackend.infra.model.token.TokenRepo;
+import pl.kartven.javaprobackend.infra.model.repository.TokenRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class LogoutHandler implements org.springframework.security.web.authentication.logout.LogoutHandler {
 
-    private final TokenRepo tokenRepo;
+    private final TokenRepository tokenRepo;
     private final JwtUtil jwtUtil;
 
     @Override

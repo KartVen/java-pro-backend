@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.kartven.javaprobackend.infra.restapi.dto.AuthRequest;
-import pl.kartven.javaprobackend.infra.restapi.dto.AuthResponse;
+import pl.kartven.javaprobackend.infra.restapi.dto.AuthReqDto;
+import pl.kartven.javaprobackend.infra.restapi.dto.AuthResDto;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,12 +21,12 @@ import java.io.IOException;
 public class AuthController {
     private final AuthService authService;
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest.Login body){
+    public ResponseEntity<AuthResDto> login(@Valid @RequestBody AuthReqDto.Login body){
         return ResponseEntity.status(HttpStatus.OK).body(authService.login(body));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@Valid @RequestBody AuthRequest.Register body){
+    public ResponseEntity<AuthResDto> register(@Valid @RequestBody AuthReqDto.Register body){
         return ResponseEntity.status(HttpStatus.OK).body(authService.register(body));
     }
 

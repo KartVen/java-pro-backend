@@ -11,7 +11,6 @@ import pl.kartven.javaprobackend.infra.restapi.dto.CodeDto;
 import pl.kartven.javaprobackend.infra.restapi.dto.LinkDto;
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/sections")

@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import pl.kartven.javaprobackend.infra.model.user.User;
+import pl.kartven.javaprobackend.infra.model.entity.User;
 
 import java.security.Key;
 import java.util.Date;
