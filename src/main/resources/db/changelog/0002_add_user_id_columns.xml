@@ -39,19 +39,6 @@
         </addColumn>
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="quizzes" constraintName="FK_QUIZZES_ON_USER"
                                  referencedColumnNames="id" referencedTableName="users"/>
-
-        <addColumn tableName="questions">
-            <column name="user_id" type="BIGINT"/>
-        </addColumn>
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="questions"
-                                 constraintName="FK_QUESTIONS_ON_USER"
-                                 referencedColumnNames="id" referencedTableName="users"/>
-
-        <addColumn tableName="answers">
-            <column name="user_id" type="BIGINT"/>
-        </addColumn>
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="answers" constraintName="FK_ANSWERS_ON_USER"
-                                 referencedColumnNames="id" referencedTableName="users"/>
     </changeSet>
 
     <changeSet id="0004-4" author="KartVen">

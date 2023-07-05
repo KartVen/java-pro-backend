@@ -23,7 +23,11 @@ public class Code {
     @JoinColumn(name = "topic_id")
     private Topic topic;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "section_id")
     private Section section;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

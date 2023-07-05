@@ -59,39 +59,39 @@
                     ('Kod12.java', 'public class FileHandling { /* kod */ }', 4, 12, 1),
                     ('Kod13.java', 'public class Database { /* kod */ }', 5, 13, 1);
 
-            insert into public.questions (quiz_id, text, user_id)
-            values  (1, 'Co to jest zmienna?', 1),
-                    (1, 'Podstawowe typy danych?', 1),
-                    (1, 'Pętla for a while?', 1),
-                    (2, 'Dziedziczenie klas?', 2),
-                    (2, 'Wynik operatora AND (&&)?', 2),
-                    (2, 'Co to jest polimorfizm?', 2),
-                    (3, 'Klasa abstrakcyjna?', 1),
-                    (3, 'Interfejs vs klasa abstrakcyjna?', 1),
-                    (3, 'Dziedziczenie wielokrotne w Javie?', 1),
-                    (3, 'Nadpisywanie metod?', 1);
+            insert into public.questions (quiz_id, text)
+            values  (1, 'Co to jest zmienna?'),
+                    (1, 'Podstawowe typy danych?'),
+                    (1, 'Pętla for a while?'),
+                    (2, 'Dziedziczenie klas?'),
+                    (2, 'Wynik operatora AND (&&)?'),
+                    (2, 'Co to jest polimorfizm?'),
+                    (3, 'Klasa abstrakcyjna?'),
+                    (3, 'Interfejs vs klasa abstrakcyjna?'),
+                    (3, 'Dziedziczenie wielokrotne w Javie?'),
+                    (3, 'Nadpisywanie metod?');
 
-            insert into public.answers (question_id, text, is_correct, user_id)
-            values  (1, 'Symboliczne oznaczenie miejsca w pamięci.', true, 1),
-                    (1, 'Instrukcja warunkowa w Javie.', false, 1),
-                    (1, 'Wyświetlanie tekstu na ekranie.', false, 1),
-                    (1, 'Zbiór danych przechowywanych w pamięci.', false, 1),
-                    (2, 'int, double, boolean, char itd.', true, 1),
-                    (2, 'start, stop, pause, reset.', false, 1),
-                    (2, 'if, else, for, while.', false, 1),
-                    (2, 'true, false, null.', false, 1),
-                    (3, 'Iteracja po kolekcji lub tablicy.', true, 1),
-                    (3, 'Brak zdefiniowanej ilości iteracji.', false, 1),
-                    (3, 'Iteracja w oparciu o warunek.', false, 1),
-                    (3, 'Dowolna iteracja.', false, 1),
-                    (4, 'Tworzenie nowych klas na podstawie istniejących.', true, 2),
-                    (4, 'Usuwanie klas z hierarchii dziedziczenia.', false, 2),
-                    (4, 'Tworzenie interfejsów dla klas dziedziczących.', false, 2),
-                    (4, 'Tworzenie kopii istniejących klas.', false, 2),
-                    (5, 'Zwraca prawdę, gdy oba warunki są prawdziwe.', true, 2),
-                    (5, 'Zwraca prawdę, gdy przynajmniej jeden warunek jest prawdziwy.', false, 2),
-                    (5, 'Zwraca prawdę, gdy oba warunki są fałszywe.', false, 2),
-                    (5, 'Zwraca fałsz, gdy przynajmniej jeden warunek jest fałszywy.', false, 2);
+            insert into public.answers (question_id, text, is_correct)
+            values  (1, 'Symboliczne oznaczenie miejsca w pamięci.', true),
+                    (1, 'Instrukcja warunkowa w Javie.', false),
+                    (1, 'Wyświetlanie tekstu na ekranie.', false),
+                    (1, 'Zbiór danych przechowywanych w pamięci.', false),
+                    (2, 'int, double, boolean, char itd.', true),
+                    (2, 'start, stop, pause, reset.', false),
+                    (2, 'if, else, for, while.', false),
+                    (2, 'true, false, null.', false),
+                    (3, 'Iteracja po kolekcji lub tablicy.', true),
+                    (3, 'Brak zdefiniowanej ilości iteracji.', false),
+                    (3, 'Iteracja w oparciu o warunek.', false),
+                    (3, 'Dowolna iteracja.', false),
+                    (4, 'Tworzenie nowych klas na podstawie istniejących.', true),
+                    (4, 'Usuwanie klas z hierarchii dziedziczenia.', false),
+                    (4, 'Tworzenie interfejsów dla klas dziedziczących.', false),
+                    (4, 'Tworzenie kopii istniejących klas.', false),
+                    (5, 'Zwraca prawdę, gdy oba warunki są prawdziwe.', true),
+                    (5, 'Zwraca prawdę, gdy przynajmniej jeden warunek jest prawdziwy.', false),
+                    (5, 'Zwraca prawdę, gdy oba warunki są fałszywe.', false),
+                    (5, 'Zwraca fałsz, gdy przynajmniej jeden warunek jest fałszywy.', false);
 
             insert into public.external_links (topic_id, section_id, name, url, user_id)
             values  (1, 1, 'Link 1', 'http://example.com/link1', 1),

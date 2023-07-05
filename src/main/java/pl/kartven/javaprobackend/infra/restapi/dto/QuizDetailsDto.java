@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class QuizDetailsDto extends QuizDto {
+public class QuizDetailsDto extends QuizResDto {
     private Topic topic;
     private Long questions;
     private User creator;

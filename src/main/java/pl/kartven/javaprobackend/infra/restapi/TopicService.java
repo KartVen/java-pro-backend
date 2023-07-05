@@ -8,17 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.kartven.javaprobackend.exception.structure.NotFoundException;
 import pl.kartven.javaprobackend.exception.structure.ServerProcessingException;
-import pl.kartven.javaprobackend.infra.model.entity.Slide;
-import pl.kartven.javaprobackend.infra.model.entity.Topic;
-import pl.kartven.javaprobackend.infra.model.repository.QuizRepository;
-import pl.kartven.javaprobackend.infra.model.repository.SectionRepository;
-import pl.kartven.javaprobackend.infra.model.repository.SlideRepository;
-import pl.kartven.javaprobackend.infra.model.repository.TopicRepository;
+import pl.kartven.javaprobackend.infra.model.entity.*;
+import pl.kartven.javaprobackend.infra.model.repository.*;
 import pl.kartven.javaprobackend.infra.restapi.dto.*;
-import pl.kartven.javaprobackend.infra.restapi.mapper.QuizMapper;
-import pl.kartven.javaprobackend.infra.restapi.mapper.SectionMapper;
-import pl.kartven.javaprobackend.infra.restapi.mapper.SlideMapper;
-import pl.kartven.javaprobackend.infra.restapi.mapper.TopicMapper;
+import pl.kartven.javaprobackend.infra.restapi.mapper.*;
 import pl.kartven.javaprobackend.utility.ImageUtils;
 
 import java.util.List;
@@ -40,10 +33,14 @@ public class TopicService {
     private final SlideRepository slideRepository;
     private final SlideMapper slideMapper;
     private final UserService userService;
+    private final CodeMapper codeMapper;
+    private final CodeRepository codeRepository;
+    private final LinkMapper linkMapper;
+    private final ExternalLinkRepository externalLinkRepository;
 
-    public List<TopicResDto> getTopics(Long id) {
+    public List<TopicResDto> getTopics(Long userId) {
         return getTopicsFromDB(() ->
-                (Objects.isNull(id)) ? topicRepository.findAll() : topicRepository.findByUser_Id(id)
+                (Objects.isNull(userId)) ? topicRepository.findAll() : topicRepository.findByUser_Id(userId)
         );
     }
 
@@ -59,8 +56,13 @@ public class TopicService {
                 .getOrElseThrow(ServerProcessingException::new);
     }
 
-    public List<QuizDto> getQuizzesOfTopic(Long id) {
-        return Option.of(quizRepository.findByTopic_Id(id))
+    public List<QuizResDto> getQuizzesOfTopic(Long id, Long userId) {
+        return getQuizzesOfTopicFromDB(() ->
+                (Objects.isNull(userId)) ? quizRepository.findByTopic_Id(id) : quizRepository.findByTopic_IdAndUser_Id(id, userId));
+    }
+
+    private List<QuizResDto> getQuizzesOfTopicFromDB(Supplier<List<Quiz>> supplier) {
+        return Option.of(supplier.get())
                 .map(quizMapper::map)
                 .getOrElseThrow(ServerProcessingException::new);
     }
@@ -98,14 +100,13 @@ public class TopicService {
                 .getOrElseThrow(ServerProcessingException::new);
     }
 
-    public void postTopic(TopicReqDto body) {
-        Option.of(body)
+    public TopicResDto postTopic(TopicReqDto body) {
+        return Option.of(body)
                 .map(topicMapper::map)
                 .peek(topic -> topic.setUser(userService.getContenxtUser()))
                 .map(topicRepository::save)
-                .onEmpty(() -> {
-                    throw new ServerProcessingException();
-                });
+                .map(topicMapper::map)
+                .getOrElseThrow(ServerProcessingException::new);
     }
 
     public void postSectionOfTopic(Long id, SectionReqDto body) {
@@ -116,6 +117,69 @@ public class TopicService {
                     section.setUser(userService.getContenxtUser());
                 })
                 .map(sectionRepository::save)
+                .onEmpty(() -> {
+                    throw new ServerProcessingException();
+                });
+    }
+
+    public void postCodesOfTopic(Long id, CodeReqDto body) {
+        Option.of(body)
+                .map(codeMapper::map)
+                .peek(code -> {
+                    code.setTopic(topicRepository.findById(id).orElseThrow(NotFoundException::new));
+                    code.setUser(userService.getContenxtUser());
+                    code.setSection(proccessAndGetSection(
+                            code.getSection(),
+                            userService.getContenxtUser(),
+                            code.getTopic()
+                    ));
+                })
+                .map(codeRepository::save)
+                .onEmpty(() -> {
+                    throw new ServerProcessingException();
+                });
+    }
+
+    private Section proccessAndGetSection(Section section, User user, Topic topic) {
+        return Option.of(section.getId())
+                .map(secId -> sectionRepository.findById(secId).orElse(null))
+                .getOrElse(() -> {
+                    section.setTopic(topic);
+                    section.setUser(user);
+                    return section;
+                });
+    }
+
+    public void postLinkOfTopic(Long id, LinkReqDto body) {
+        Option.of(body)
+                .map(linkMapper::map)
+                .peek(link -> {
+                    link.setTopic(topicRepository.findById(id).orElseThrow(NotFoundException::new));
+                    link.setUser(userService.getContenxtUser());
+                    link.setSection(proccessAndGetSection(
+                            link.getSection(),
+                            link.getUser(),
+                            link.getTopic()
+                    ));
+                })
+                .map(externalLinkRepository::save)
+                .onEmpty(() -> {
+                    throw new ServerProcessingException();
+                });
+    }
+
+    public void postQuizOfTopic(Long id, QuizReqDto body) {
+        Option.of(body)
+                .map(quizMapper::map)
+                .peek(quiz -> {
+                    quiz.setTopic(topicRepository.findById(id).orElseThrow(NotFoundException::new));
+                    quiz.setUser(userService.getContenxtUser());
+                    quiz.getQuestions().forEach(question -> {
+                        question.setQuiz(quiz);
+                        question.getAnswers().forEach(answer -> answer.setQuestion(question));
+                    });
+                })
+                .map(quizRepository::save)
                 .onEmpty(() -> {
                     throw new ServerProcessingException();
                 });

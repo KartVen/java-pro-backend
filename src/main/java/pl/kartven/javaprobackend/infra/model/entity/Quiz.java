@@ -22,7 +22,7 @@ public class Quiz {
     private Topic topic;
     private String name;
     private String description;
-    @OneToMany(mappedBy = "quiz")
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.PERSIST)
     private List<Question> questions;
 
     @ManyToOne

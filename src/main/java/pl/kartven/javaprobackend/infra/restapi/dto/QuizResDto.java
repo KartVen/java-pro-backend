@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CodeDto {
+public class QuizResDto {
     private Long id;
     private String name;
-    private String content;
+    private String description;
 }

@@ -9,24 +9,22 @@ import pl.kartven.javaprobackend.infra.restapi.dto.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@RestController
 @RequestMapping("/api/topics")
 public interface TopicControllerDefinition {
     @GetMapping
-    public ResponseEntity<List<TopicResDto>> getTopics(
-            @RequestParam(value = "user_id", required = false) Long id
+    ResponseEntity<List<TopicResDto>> getTopics(
+            @RequestParam(value = "userId", required = false) Long userId
     );
 
     @PostMapping
     @PreAuthorize("isAuthenticated()")
-    ResponseEntity<Void> postTopic(
+    ResponseEntity<TopicResDto> postTopic(
             @RequestBody @Valid TopicReqDto body
     );
 
     @GetMapping("/{id}/sections")
     ResponseEntity<List<SectionResDto>> getSectionsOfTopic(
             @PathVariable Long id
-            //@RequestParam(value = "type", required = true) Type type
     );
 
     @PostMapping("/{id}/sections")
@@ -37,8 +35,16 @@ public interface TopicControllerDefinition {
     );
 
     @GetMapping("/{id}/quizzes")
-    ResponseEntity<List<QuizDto>> getQuizzesOfTopic(
-            @PathVariable Long id
+    ResponseEntity<List<QuizResDto>> getQuizzesOfTopic(
+            @PathVariable Long id,
+            @RequestParam(value = "user_id", required = false) Long userId
+    );
+
+    @PostMapping("/{id}/quizzes")
+    @PreAuthorize("isAuthenticated()")
+    ResponseEntity<?> postQuizOfTopic(
+            @PathVariable Long id,
+            @RequestBody QuizReqDto body
     );
 
     @GetMapping("/{id}/slides")
@@ -54,5 +60,19 @@ public interface TopicControllerDefinition {
             @PathVariable Long id,
             @ModelAttribute @Valid SlidesReqDto body,
             @RequestParam("slides") List<MultipartFile> slides
+    );
+
+    @PostMapping("/{id}/codes")
+    @PreAuthorize("isAuthenticated()")
+    ResponseEntity<?> postCodeOfTopic(
+            @PathVariable Long id,
+            @RequestBody @Valid CodeReqDto body
+    );
+
+    @PostMapping("/{id}/links")
+    @PreAuthorize("isAuthenticated()")
+    ResponseEntity<?> postLinkOfTopic(
+            @PathVariable Long id,
+            @RequestBody @Valid LinkReqDto body
     );
 }

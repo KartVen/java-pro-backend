@@ -25,5 +25,9 @@ public class ExternalLink {
     @JoinColumn(name = "section_id")
     private Section section;
     private String name;
-    private String URL;
+    private String url;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
