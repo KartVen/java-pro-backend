@@ -5,7 +5,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Configuration
 @EnableConfigurationProperties
@@ -18,5 +20,13 @@ public class AppConfig {
     @ConfigurationProperties("app.security.role")
     public static class RoleProperties {
         private String defaultRole;
+    }
+
+    @Data
+    @Configuration
+    @ConfigurationProperties("app.content")
+    public static class ContentProperties {
+        private Set<String> imageWhitelist = new HashSet<>();
+        private Float compressScale;
     }
 }
